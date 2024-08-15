@@ -10,7 +10,7 @@ const userSchema = new Schema(
             unique: true,
             lowercase: true,
             trim: true, 
-            index: true
+            index: true // make searchable easily
         },
         email: {
             type: String,
@@ -51,7 +51,7 @@ const userSchema = new Schema(
         timestamps: true
     }
 )
-
+// hook is used to encrypt (hash) the user's password before saving the document to the MongoDB database
 userSchema.pre("save", async function (next) {
     if(!this.isModified("password")) return next();
 
@@ -59,6 +59,7 @@ userSchema.pre("save", async function (next) {
     next()
 })
 
+//method is object in schema and thats how we can add proprty(make custom methods) to that objct
 userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password, this.password)
 }

@@ -1,3 +1,4 @@
+//Purpose: Defines a class (ApiResponse) to format successful API responses consistently.
 class ApiResponse {
     constructor(statusCode, data, message = "Success"){
         this.statusCode = statusCode
