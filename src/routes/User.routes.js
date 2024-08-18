@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { registerUser } from "../controllers/User.controller.js";
+import { registerUser, loginUser, logoutUser, refrshAccessToken } from "../controllers/User.controller.js";
 import {upload} from "../middlewares/Multer.middleware.js"
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router()
 
 router.route("/register").post(
-    upload.fields([
+    upload.fields([ // inject middleware 
         {
             name: "avatar",
             maxCount: 1
@@ -17,5 +18,11 @@ router.route("/register").post(
     ]),
     registerUser
     )
+
+router.route("/login").post(loginUser)
+
+//secured routes
+router.route("/logout").post(verifyJWT ,logoutUser)
+router.route("/refresh-token").post(refrshAccessToken)
 
 export default router
